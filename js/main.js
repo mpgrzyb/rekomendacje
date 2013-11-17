@@ -12,11 +12,11 @@ function set_rate(ocena){
 }
 
 function check_if_user_exists(login){
-	if(login!=''){
+	// if(login!=''){
 		set_new_user(login.toLowerCase())
-	}else{
-		$('#message').text('Wpisz login by rozpocząć.');
-	}
+	// }else{
+		// $('#message').text('Wpisz login by rozpocząć.');
+	// }
 }
 function set_new_user(login){
 	$.ajax({
@@ -57,11 +57,14 @@ function get_top_movies() {
 }
 
 function get_next_movie(){
-	if(num_of_movie > 19){
+	if(num_of_movie > 3){
 		alert(rates);
+		for(var i = 0; i < movies.length; i++){
+			alert(movies[i][1] + " " + rates[i] );
+		}
 		$('#center').load('allRates.html');	
 	}else{
-		if(rate > 0){
+		// if(rate > 0){
 
 			photo.src = 'http://filman.pl/' + movies[num_of_movie][2];
 			title.innerHTML = movies[num_of_movie][1];
@@ -75,9 +78,9 @@ function get_next_movie(){
 			document.getElementById("out").checked = true;
 
 		}
-		else{
-			$('#message').text('Oceń film');
-		}
+		// else{
+			// $('#message').text('Oceń film');
+		// }
 	}
-}
+// }
 
