@@ -1,0 +1,16 @@
+<div id="rate_content">
+	<div id='title'></div>
+	<img src='' id='poster' id="poster">
+	<!-- Rating stars -->
+	<div class="rating" id="rate">
+		<input id="out" type="radio" name="rating" value="0" checked /><span id="hide"></span>
+		<input onclick="set_rate(1)" type="radio" name="rating" value="1" /><span></span>
+		<input onclick="set_rate(2)" type="radio" name="rating" value="2" /><span></span>
+		<input onclick="set_rate(3)" type="radio" name="rating" value="3" /><span></span>
+		<input onclick="set_rate(4)" type="radio" name="rating" value="4" /><span></span>
+		<input onclick="set_rate(5)" type="radio" name="rating" value="5" /><span></span>
+	</div>
+	<div id="message" style="width: 290px;"></div>
+
+	<button onclick='get_next_movie()'>Next movie</button>
+</div>		

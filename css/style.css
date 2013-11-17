@@ -1,0 +1,106 @@
+body{
+	/*background-color: red;*/
+}
+#center{
+	/*background-color: pink;*/
+	margin: auto;
+	margin-top: 100px;
+	width: 500px;
+	height: 300px;
+	border: 1px #333 solid;
+}
+#main_title{
+	text-align: center;
+	width: 100%;
+	float: left;
+	font-size: 20px;
+	background-color: white;
+}
+#subtitle{
+	float: left;
+	text-align: center;
+	margin-top: 10px;
+	font-size: 16px;
+	width: 100%;
+}
+submit{
+	float: left;
+	margin-top: 30px;
+	margin-left: 150px;
+}
+#login{
+	margin:30px 0px 0px 10px;
+	float: left;
+}
+#message{
+	width: 100%;
+	height: 30px;
+	margin-top: 25px;
+	float: left;
+	text-align: center;
+	color: red;
+}
+
+/* RATE CONTENT */
+
+#rate_content{
+	width: 500px;
+	height: 300px;
+}
+#title{
+	width: 100%;
+	height: 30px;
+	margin-top: 10px;
+	font-size: 20px;
+	text-align: center;
+	float: left;
+}
+#poster{
+	float: left;
+	width: 106px;
+	height: 160px;
+	margin: 10px 0px 0px 10px;
+}
+#rate{
+	float: left;
+	width: 110px;
+	height: 18px;
+	margin: 75px 0 0 90px;
+}
+button{
+	margin: 35px 0 0 200px;
+	width: 120px;
+	height: 25px;
+	float: left;
+	display: inline;
+	clear: left;
+}
+
+
+/* STARS */
+
+#hide {
+    display:none;
+}
+.rating input {
+    position:absolute;
+    filter:alpha(opacity=0);
+    -moz-opacity:0;
+    -khtml-opacity:0;
+    opacity:0;
+    cursor:pointer;
+    width:17px;
+}
+.rating span {
+    width:24px;
+    height:16px;
+    line-height:16px;
+    padding:1px 22px 1px 0; /* 1px FireFox fix */
+    background:url(../stars.png) no-repeat -22px 0;
+}
+.rating input:checked + span {
+    background-position:-22px 0;
+}
+.rating input:checked + span ~ span {
+    background-position:0 0;
+}
