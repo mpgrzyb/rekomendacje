@@ -1,0 +1,5 @@
+-- najciekawsze dane z updateowanych Pozycji
+select p.tytul_pl, p.czas_trwania, a.nazwa_aktor, fk.DoM, p.typ from Pozycja as p left join FK_Aktor_Pozycja as fk on fk.id_pozycja = p.id_pozycja left join Aktor as a on a.id_aktor = fk.id_aktor group by p.tytul_pl, a.nazwa_aktor, fk.DoM, p.czas_trwania order by p.id_pozycja asc limit 0,50;
+
+-- rozbudowane zapytanie z GATUNKIEM i AKTORAMI
+ select p.tytul_pl, p.czas_trwania, a.nazwa_aktor, fk.DoM as "DoM Aktora", p.typ, g.nazwa_gatunek, fk_g.DoM as "DoM Gatunmku" from Pozycja as p left join FK_Aktor_Pozycja as fk on fk.id_pozycja = p.id_pozycja left join Aktor as a on a.id_aktor = fk.id_aktor left join FK_Gatunek_Pozycja as fk_g on fk_g.id_pozycja = p.id_pozycja left join Gatunek as g on g.id_gatunek = fk_g.id_gatunek group by p.tytul_pl, a.nazwa_aktor, fk.DoM, fk_g.Dom, g.nazwa_gatunek, p.czas_trwania order by p.id_pozycja asc limit 0,50;

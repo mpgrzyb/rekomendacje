@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
 from urllib2 import Request, urlopen, HTTPError
 import json
+import time
 from pprint import pprint
 
-
-GenresList = ['Drama','Dramat','Comedy','Komedia','Action','Akcja','Thriller','Thriller','Crime',u'Kryminał','Document','Dokumentalny','War','Wojenny','Adventure','Przygodowy','History','Historyczny', 'Animation','Animacja', 'Family', 'Familijny', 'Fantasy', 'Fantasy', 'Music', 'Musical', 'Romance', 'Romans', 'Sports Film', 'Sportowy', 'Western', 'Western', 'Science Fiction', 'Sci-fi', 'Indie', u'Kino niezależne', 'Horror', 'Horror', 'Documentary', 'Dokumentalny', 'Road Movie', 'Film drogi', 'Film Noir', 'Noir', 'Erotic', 'Erotyczny', 'Holiday', 'Wakacyjny','Suspense',u'Niepewność']
 def change_time(czas):
   hours = int(czas) / 60
   minutes = int(czas) - hours * 60
@@ -25,9 +24,16 @@ def FindMovie(title, date):
 
 	try:
 		request = Request("http://private-ba33-themoviedb.apiary.io/3/search/movie?api_key=70d907e0f58362eee8ad8f72503d4dc2&query=" + title.strip(), headers=headers)
-	except ValueError:
+	except:
 		return '404'	
-	response_body = urlopen(request).read()
+	try:
+		response_body = urlopen(request).read()
+	except:
+		print '!!!!!  BŁĄD  !!!!!'
+		time.sleep(10)
+		response_body = urlopen(request).read()
+		pass
+
 	response_body = response_body.replace('-nan','0')
 	response_body = response_body.replace('nan','0')
 	data = json.loads(response_body)
@@ -53,14 +59,26 @@ def GetAllData(movieId):
 		request = Request("http://private-ba33-themoviedb.apiary.io/3/movie/" + str(movieId) + "?api_key=70d907e0f58362eee8ad8f72503d4dc2", headers=headers)
 	except ValueError:
 		return '404'	
-	response_body = urlopen(request).read()
+	try:
+		response_body = urlopen(request).read()
+	except:
+		print '!!!!!  BŁĄD  !!!!!'
+		time.sleep(10)
+		response_body = urlopen(request).read()
+		pass
 	data = json.loads(response_body)
 	return data
 
 def GetAllData_cast(movieId):
 	headers = {"Accept": "application/json"}
 	request = Request("http://private-ba33-themoviedb.apiary.io/3/movie/" + str(movieId) + "/casts?api_key=70d907e0f58362eee8ad8f72503d4dc2", headers=headers)
-	response_body = urlopen(request).read()
+	try:
+		response_body = urlopen(request).read()
+	except:
+		print '!!!!!  BŁĄD  !!!!!'
+		time.sleep(10)
+		response_body = urlopen(request).read()
+		pass
 	data = json.loads(response_body)
 	return data
 
@@ -177,7 +195,16 @@ def GetKeywords(movieId):
 	# from urllib2 import Request, urlopen
 	headers = {"Accept": "application/json"}
 	request = Request("http://private-ba33-themoviedb.apiary.io/3/movie/" + str(movieId) + "/keywords?api_key=70d907e0f58362eee8ad8f72503d4dc2", headers=headers)
-	response_body = urlopen(request).read()
+	
+	try:
+		response_body = urlopen(request).read()
+	except:
+		print '!!!!!  BŁĄD  !!!!!'
+		time.sleep(10)
+		response_body = urlopen(request).read()
+		pass
+		
+
 	data = json.loads(response_body)
 	keywords_data = data['keywords']
 	keywords = []

@@ -1,2 +1,0 @@
--- najciekawsze dane z updateowanych Pozycji
-select p.tytul_pl, p.czas_trwania, a.nazwa_aktor, fk.DoM, p.typ from Pozycja as p left join FK_Aktor_Pozycja as fk on fk.id_pozycja = p.id_pozycja left join Aktor as a on a.id_aktor = fk.id_aktor group by p.tytul_pl, a.nazwa_aktor, fk.DoM, p.czas_trwania order by p.id_pozycja asc limit 0,50;
