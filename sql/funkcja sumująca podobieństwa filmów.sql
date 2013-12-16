@@ -13,7 +13,12 @@ CREATE DEFINER=`glebels_root`@`localhost` FUNCTION `SumDoM`(`uzytkownikId` INT, 
 
 
 
-
+-- Wszystkie filmy użytkownika
+select f.tytul_pl, uf.ocena 
+from FK_Uzytkownicy_Filmy uf 
+	inner join Filmy f on f.id_film = uf.id_film 
+	inner join Uzytkownicy u on u.id_uzytkownik = uf.id_uzytkownik 
+where u.id_uzytkownik=1;
 
 -- Zmienione zapytanie na potrzeby nowej tabeli z pełnym iloczynek kartezjańskim
 select f.id_film as idFilm1, ff.id_film2 as idFilm2, DoMLiked(uf.ocena) as 'Ocena', ff.Similarity
@@ -21,10 +26,12 @@ select f.id_film as idFilm1, ff.id_film2 as idFilm2, DoMLiked(uf.ocena) as 'Ocen
             inner join FK_Uzytkownicy_Filmy uf on uf.id_film = f.id_film
             inner join Uzytkownicy u on u.id_uzytkownik = uf.id_uzytkownik
             inner join FK_Filmy_Filmy ff on ff.id_film = f.id_film
-    where u.id_uzytkownik = 1 and ff.id_film2 = 1161 and ff.id_film2 != f.id_film
+    where u.id_uzytkownik = 1 and ff.id_film2 = 437 and ff.id_film2 != f.id_film
     group by f.id_film, ff.id_film2, ff.Similarity 
     having Ocena > 0.5
 
+
+-- NOWA FUNKCJA
 -- Nowa funkcja sumująca iloczyny podobieństw i ocen
 DROP FUNCTION `SumDoM2`;
 CREATE DEFINER=`glebels_root`@`localhost` FUNCTION `SumDoM2`(`uzytkownikId` INT, `filmId` INT) RETURNS DECIMAL(10,7) DETERMINISTIC NO SQL SQL SECURITY DEFINER return (select round(sum(Similarity*Ocena),7) from
@@ -33,15 +40,54 @@ CREATE DEFINER=`glebels_root`@`localhost` FUNCTION `SumDoM2`(`uzytkownikId` INT,
             inner join FK_Uzytkownicy_Filmy uf on uf.id_film = f.id_film
             inner join Uzytkownicy u on u.id_uzytkownik = uf.id_uzytkownik
             inner join FK_Filmy_Filmy ff on ff.id_film = f.id_film
-    where u.id_uzytkownik = 1 and ff.id_film2 = 1161 and ff.id_film2 != f.id_film
+    where u.id_uzytkownik = uzytkownikId and ff.id_film2 = filmId
+    group by f.id_film, ff.id_film2, ff.Similarity 
+    having Ocena > 0.5) as tmp)
+
+-- Wersja z sumą ważoną
+DROP FUNCTION `SumDoM2`;
+CREATE DEFINER=`glebels_root`@`localhost` FUNCTION `SumDoM2`(`uzytkownikId` INT, `filmId` INT) RETURNS DECIMAL(10,7) DETERMINISTIC NO SQL SQL SECURITY DEFINER return (select round((sum(Similarity*Ocena)/count(tmp.idFilm1)),7) from
+    (select f.id_film as idFilm1, ff.id_film2 as idFilm2, DoMLiked(uf.ocena) as 'Ocena', ff.Similarity
+    from Filmy f
+            inner join FK_Uzytkownicy_Filmy uf on uf.id_film = f.id_film
+            inner join Uzytkownicy u on u.id_uzytkownik = uf.id_uzytkownik
+            inner join FK_Filmy_Filmy ff on ff.id_film = f.id_film
+    where u.id_uzytkownik = uzytkownikId and ff.id_film2 = filmId
     group by f.id_film, ff.id_film2, ff.Similarity 
     having Ocena > 0.5) as tmp)
 
 
+
+
+
+
+
+
 -- Zapytanie do funkcji przy tabeli FK_Filmy_Filmy z pełnym iloczynem kartezjańskim
-select id_film, tytul_pl, sumDoM2(1,id_film) From Filmy group by id_film, tytul_pl order by sumDoM2(1,id_film) desc limit 0,20;
+select id_film, tytul_pl, f.ocena, sumDoM2(1,id_film) 
+From Filmy f 
+where id_film not in (select f.id_film from FK_Uzytkownicy_Filmy uf inner join Filmy f on f.id_film = uf.id_film inner join Uzytkownicy u on u.id_uzytkownik = uf.id_uzytkownik where u.id_uzytkownik=1) 
+group by id_film, tytul_pl 
+order by sumDoM2(1,id_film) desc, f.ocena desc, f.popularnosc desc
+limit 0,20;
 
 
-select tytul_pl
-from Filmy f
-	inner join 
+-- Pierwiastek iloczynu stopni przynależności
+select sqrt(DoMReleaseYear(1161,1126)*DoMReleaseYear(1126,1161));
+
+
+select Year(rok_produkcji) from Filmy where id_film = 1161
+select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1;
+select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) asc limit 0,1;
+
+-- When year1 < year2
+select (1964-(select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) asc limit 0,1))/(1971-(select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) asc limit 0,1)) as DoM
+
+-- When year1 > year2
+select ((select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1)-1971)/((select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1)-1964) as DoM
+
+
+
+
+
+

@@ -7,16 +7,19 @@ def main():
 	db = MySQLdb.connect(host=login.GetHost(), user=login.GetUser(), passwd=login.GetPassword(), db=login.GetDataBase(), charset = "utf8", use_unicode = True)
 	cur = db.cursor()
 	cur_1 = db.cursor()
-	cur.execute("select id_film from Filmy order by id_film;")
+	cur_1 = db.cursor()
+	cur.execute("select id_film from Filmy where id_film > 5571 order by id_film;")
+	cur_1.execute("select id_film from Filmy order by id_film;")
 	
 	czas_rozpoczecia = datetime.datetime.now()
 	count = 0
 	for row1 in cur:
-		for row2 in cur:
+		for row2 in cur_1:
 			# if row2[0] > row1[0]:
-			cur_1.execute("insert into FK_Filmy_Filmy values(" + str(row1[0]) + "," + str(row2[0]) + ",Similarity(" + str(row1[0]) + "," + str(row2[0]) + "));")
-			cur_1.execute("commit")
+			cur_2.execute("insert into FK_Filmy_Filmy values(" + str(row1[0]) + "," + str(row2[0]) + ",Similarity(" + str(row1[0]) + "," + str(row2[0]) + "));")
+			cur_2.execute("commit")
 			count = count + 1
+			print row1[0], row2[0]
 			print count
 				# if count == 105:
 					# print row1[0], row2[0]					

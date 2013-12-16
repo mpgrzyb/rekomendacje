@@ -3,6 +3,7 @@ var num_of_movie = 1;
 var rate = 0;
 var rates = [];
 var moviesToSend = [];
+var userLogin = "";
 
 function set_rate(ocena){
 	rate = ocena;
@@ -24,6 +25,7 @@ function set_new_user(login){
 		}).done(function(data) {
 			// if(data == 'true'){
 				// alert('Dodano użytkownika');
+				userLogin = login.toLowerCase(); 
 				set_questions();
 			// }else{
 				// $('#message').text('Użytkownik o podanej nazwie istnieje. Prosze wpisać inną nazwę.');
@@ -52,29 +54,29 @@ function get_top_movies() {
 			title.innerHTML = movies[0][1];			
 	});	
 }
+function fill_rates(){
+	for(var i = 0; i < rates.length; i++){
+		movies[i][2] = rates[i];
+		movies[i][3] = userLogin;
+	}
+	set_rates();
+}
 
 function get_next_movie(){
-	if(num_of_movie > 5){
-		// var zmienna = "<h3 style='width: 100%; text-align: center;'>Twoje oceny</h3></br>";
-		for(var i = 0; i < rates.length; i++){
-			movies[i][2] = rates[i];
-		}
-
-		set_rates();
+	if(num_of_movie == 2){
+		rates.push(rate);
+		fill_rates();
 	}else{
-		// if(rate > 0){
+		photo.src = 'http://filman.pl/' + movies[num_of_movie][2];
+		title.innerHTML = movies[num_of_movie][1];
+		
+		rates.push(rate);
 
-			photo.src = 'http://filman.pl/' + movies[num_of_movie][2];
-			title.innerHTML = movies[num_of_movie][1];
-			
-			rates.push(rate);
-
-			rate = 0;
-			num_of_movie = num_of_movie + 1;	
-			$('#message').text('');
-			// odznaczenie gwiazdek
-			document.getElementById("out").checked = true;
-
+		rate = 0;
+		num_of_movie = num_of_movie + 1;	
+		$('#message').text('');
+		// odznaczenie gwiazdek
+		document.getElementById("out").checked = true;
 		}
 		// else{
 			// $('#message').text('Oceń film');
