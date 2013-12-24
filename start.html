@@ -23,7 +23,7 @@
 			<submit type="text">Hasło: </submit>
 			<input type="password" id="password" onkeydown="if(event.keyCode == 13){check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);}"/>
 			<div id="message"></div>
-			<button onclick="check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);">Zacznij ocenianie</button>
+			<button id='next_movie' onclick="check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);">Zacznij ocenianie</button>
 			
 		</div>
 	</body>

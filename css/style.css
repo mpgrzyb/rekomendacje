@@ -71,8 +71,8 @@ submit{
 	height: 18px;
 	margin: 75px 0 0 90px;
 }
-button{
-	margin: 35px 0 0 200px;
+#next_movie{
+	margin: 15px 0 0 200px;
 	width: 120px;
 	height: 25px;
 	float: left;
@@ -80,6 +80,27 @@ button{
 	clear: left;
 }
 
+#recomendations {
+	margin: 5px 0 0 185px;
+	width: 150px;
+	height: 35px;
+	float: left;
+	visibility: hidden;
+}
+#movie{
+	width: 100% - 15px;
+	height: 25px;
+	font-size: 14px;
+	padding-left: 15px;
+}
+#header_1{
+	width: 100% - 15px;
+	height: 25px;
+	font-size: 15px;
+	padding-left: 15px;
+	margin-top: 15px;
+	text-align: center;
+}
 
 /* STARS */
 

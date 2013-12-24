@@ -9,7 +9,7 @@ if (!$con)
 
 mysql_select_db("glebels_movies", $con);
 mysql_query("SET NAMES 'utf8'");
-$sql="Select f.id_film, tytul_pl, plakat_mini From Filmy f where f.id_film not in(select id_film from FK_Uzytkownicy_Filmy where id_uzytkownik = " . stripslashes($zmienna) . ") group by tytul_pl order by f.ocena desc limit 0,21;";
+$sql="Select f.id_film, tytul_pl, plakat_mini From Filmy f where f.id_film not in(select id_film from FK_Uzytkownicy_Filmy uf where id_uzytkownik = " . stripslashes($zmienna) . ")  group by tytul_pl order by f.ocena desc limit 0,1001;";
 
 $result = mysql_query($sql);
 
