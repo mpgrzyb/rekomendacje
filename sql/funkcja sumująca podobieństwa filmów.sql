@@ -72,9 +72,12 @@ order by sumDoM2(1,id_film) desc, f.ocena desc, f.popularnosc desc
 limit 0,20;
 
 
--- Pierwiastek iloczynu stopni przynależności
-select sqrt(DoMReleaseYear(1161,1126)*DoMReleaseYear(1126,1161));
 
+
+
+
+-- Pierwiastek iloczynu stopni przynależności
+select sqrt(DoMReleaseYear(346,348)*DoMReleaseYear(348,346));
 
 select Year(rok_produkcji) from Filmy where id_film = 1161
 select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1;
@@ -88,6 +91,15 @@ select ((select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc
 
 
 
+-- Ciało funkcji zwracającej przynależność roku produkcji jednego filmu do roku produkcji drugiego filmu
+return (select if((select Year(rok_produkcji) from Filmy where id_film = idFilm1)<(select Year(rok_produkcji) from Filmy where id_film = idFilm2), 
+    (select ((select Year(rok_produkcji) from Filmy where id_film = idFilm1)+1-(select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) asc limit 0,1))/((select Year(rok_produkcji) from Filmy where id_film = idFilm2)+1-(select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) asc limit 0,1)) as DoM), 
+    (select ((select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1)+1-(select Year(rok_produkcji) from Filmy where id_film = idFilm1))/((select Year(rok_produkcji) from Filmy order by Year(rok_produkcji) desc limit 0,1)+1-(select Year(rok_produkcji) from Filmy where id_film = idFilm2)) as DoM)) as DoM)
 
 
 
+select ff.id_film, f.rok_produkcji, ff.id_film2, f2.rok_produkcji, sqrt(DoMReleaseYear(ff.id_film,ff.id_film2)*DoMReleaseYear(ff.id_film2,ff.id_film)) 
+from FK_Filmy_Filmy ff
+inner join Filmy f on f.id_film = ff.id_film
+inner join Filmy f2 on f2.id_film = ff.id_film2
+limit 0,100;

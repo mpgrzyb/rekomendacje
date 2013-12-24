@@ -19,9 +19,11 @@
 			<span id="main_title">Rekomendejszyn</span>
 			<span id="subtitle">Oceń 20 filmów a otrzymasz nasze rekomendacje!</span>
 			<submit type="text">Login: </submit>
-			<input type="text" id="login" onkeydown="if(event.keyCode == 13){check_if_user_exists(document.getElementById('login').value);} " />
+			<input type="text" id="login" onkeydown="if(event.keyCode == 13){check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);} " />
+			<submit type="text">Hasło: </submit>
+			<input type="password" id="password" onkeydown="if(event.keyCode == 13){check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);}"/>
 			<div id="message"></div>
-			<button onclick="check_if_user_exists(document.getElementById('login').value);">Zacznij ocenianie</button>
+			<button onclick="check_if_user_exists(document.getElementById('login').value, document.getElementById('password').value);">Zacznij ocenianie</button>
 			
 		</div>
 	</body>

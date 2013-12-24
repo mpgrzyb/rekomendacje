@@ -4,32 +4,33 @@ var rate = 0;
 var rates = [];
 var moviesToSend = [];
 var userLogin = "";
+var userId = 0;
 
 function set_rate(ocena){
 	rate = ocena;
 }
 
-function check_if_user_exists(login){
-	// if(login!=''){
-		set_new_user(login.toLowerCase())
-	// }else{
-		// $('#message').text('Wpisz login by rozpocząć.');
-	// }
+function check_if_user_exists(login, password){
+	if(login!='' && password!=''){
+		set_new_user(login.toLowerCase(), password.toLowerCase())
+	}else{
+		$('#message').text('Wpisz login by rozpocząć.');
+	}
 }
-function set_new_user(login){
+function set_new_user(login, password){
 	$.ajax({
 		type: "POST",
 		url: "set_login.php",
-		data: { q : login },
+		data: { q : login, w : password },
 		async: true,
 		}).done(function(data) {
-			// if(data == 'true'){
-				// alert('Dodano użytkownika');
-				userLogin = login.toLowerCase(); 
+			if(data != 'false'){
+				userId = data;
+				userLogin = login; 
 				set_questions();
-			// }else{
-				// $('#message').text('Użytkownik o podanej nazwie istnieje. Prosze wpisać inną nazwę.');
-			// }
+			}else{
+				$('#message').text('Użytkownik o podanej nazwie istnieje, hasło jest niepoprawne. Zmień login by utworzyć nowego użytkownika.');
+			}
 	});
 }
 function set_questions () {
@@ -40,6 +41,7 @@ function get_top_movies() {
 	$.ajax({
 		type: "POST",
 		url: "get_top_movies.php",
+		data: { q : userId },
 		async: true,
 		}).done(function(data) {
 			var line = data.split(";");
@@ -57,13 +59,13 @@ function get_top_movies() {
 function fill_rates(){
 	for(var i = 0; i < rates.length; i++){
 		movies[i][2] = rates[i];
-		movies[i][3] = userLogin;
+		movies[i][3] = userId;
 	}
 	set_rates();
 }
 
 function get_next_movie(){
-	if(num_of_movie == 2){
+	if(num_of_movie == 20){
 		rates.push(rate);
 		fill_rates();
 	}else{
